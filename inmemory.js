@@ -27,23 +27,69 @@ var generateUserId = function() {
 	return userId;
 };
 
-exports.addUser = function(user) {
+exports.addUser = function(name) {
 	var userId = generateUserId();
-	exports.users.push();
+
+	exports.users.push({
+		user: name,
+		id: userId,
+	});
+
+	return userId;
 };
 
-exports.addChirp = function(user, chirp) {
+exports.getAllUsers = function() {
+	return exports.users;
+};
+
+exports.addChirp = function(userId, chirpText) {
 	var chirpId = generateChirpId(),
 		date = new Date();
 
 	exports.chiprs.push({
 		id: chirpId,
-		userId: user.id,
-		text: chirp.text,
+		userId: userId,
+		text: chirpText,
 		time: date
 	});
+
+	return chirpId;
 }
 
 exports.getAllChirps = function() {
 	return exports.chiprs;
 };
+
+exports.getChirp = function(id) {
+	exports.chiprs.forEach(function(chirp) {
+		if (chirp.id === id) {
+			return chirp;
+		}
+	});
+
+	throw 'Chirp with id: ' + id + ' not found';
+};
+
+exports.getChirpByUserId = function(userId) {
+	return exports.chirps.filter(function(chirp) {
+		return chirp.userId === userId;
+	});
+};
+
+exrpots.removeChirp = function(id, userId) {
+	var index = 0,
+		found = false;
+	exports.chirps.forEach(function(chirp) {
+		index++;
+		if (chirp.id === id && chirp.userId === userId) {
+			found = true;
+			break;
+		}
+	})
+
+	if (found) {
+		exports.chirps.splice(index, 1);
+	} else {
+		throw 'Chirp with id: ' + id + ' not found';
+	}
+}

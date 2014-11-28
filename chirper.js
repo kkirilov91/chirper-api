@@ -1,17 +1,4 @@
-var users = [{
-		user: 'kkirilov',
-		id: 1,
-		chirps: [1, 2] //ID of chiprs
-	}],
-	chirps = [{
-		chirpId: 1,
-		chirpText: "Търсим нов служител. Нужно е да е наполовина човеко-прасе, наполовина - мечка. Желание за работа с #WordPress е многу от съществено значка.",
-		chirpTime: "10-10-2014 12:54"
-	}, {
-		chirpId: 2,
-		chirpText: "Търсим нов служител. Нужно е да е наполовина човеко-прасе, наполовина - мечка. Желание за работа с #WordPress е многу от съществено значка.",
-		chirpTime: "10-10-2014 12:54"
-	}];
+var inmemory = require('./inmemory.js');
 
 var requestRouter = {
 	'GET': {
@@ -31,17 +18,19 @@ var requestRouter = {
 
 var http = require('http'),
 	server = http.createServer(function(request, response) {
-		var responseText = ['Request method: ' + request.method,
-			'Response Url: ' + request.url
-		].join('\n');
+
+		if (requestRouter[request.method] !== undefined && requestRouter[request.method][request.url]) {
+			
+		} else {
+
+		}
 
 		request.on('data', function(data) {
 			console.log(data.toString('utf8'));
 		});
 		request.on('end', function() {
-			console.log('End');
 		});
-		response.end(responseText);
+		response.end('end');
 	});
 
 server.listen(8000);
